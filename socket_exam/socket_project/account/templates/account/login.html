@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        .login {
+            width: 500px;
+            margin: 200px auto auto auto;
+        }
+        .title{
+            margin: 0px 0px 0px 150px;
+        }
+        .id{
+            margin: 20px 0px 0px 160px;
+        }
+        .id input{
+            margin-left: 10px;
+        }
+        .pw{
+            margin: 20px 0px 0px 160px;
+        }
+        .button{
+            margin: 20px 0px 0px 160px;
+        }
+        .signup{
+            display: inline-block;
+            margin-left: 80%;
+            margin-top : 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class = "login">
+        <h1 class = "title">로그인 페이지</h1>
+        <hr>
+        <form method="post" action="{% url 'account:login' %}">
+            {% csrf_token %}
+            <p class = "id">ID: <input type="text" name="email" id="email"/></p>
+            <p class = "pw">PW: <input type="password" name="password" id="password"/></p>
+            <p class = "button"><input type="submit" value="로그인 하기"></p>
+        </form>
+        <hr>
+        <p class = signup> <a href="./signup.html">회원가입하기</a></p>
+    </div>
+    
+</body>
+</html>
