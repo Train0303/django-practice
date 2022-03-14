@@ -53,8 +53,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
 ]
+
 LOGIN_URL = 'account/login/'
 ASGI_APPLICATION = 'socket_project.asgi.application'
 

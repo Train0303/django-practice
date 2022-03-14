@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.csrf import csrf_protect
-# Create your views here.
 
 @csrf_protect
 def login(request):
@@ -11,7 +10,6 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         request.session['email'] = email
-        print(email,password)
         user = authenticate(username=email, password=password)
         if user:
             print("login success")
