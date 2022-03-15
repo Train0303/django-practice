@@ -1,4 +1,4 @@
 # django-practice
 
 ## 참고
-https://www.notion.so/Django-Channels-Web-Socket-87cd0419fc6f432bbbe6dfe98afb7467
+https://www.notion.so/Python-Django-3a4a063a32bc4ba09f3740133be28305
