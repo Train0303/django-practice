@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>signup</title>
+    <style>
+        .login {
+            width: 500px;
+            margin: 200px auto auto auto;
+        }
+        .title{
+            margin: 0px 0px 0px 150px;
+        }
+        .id{
+            margin: 20px 0px 0px 100px;
+        }
+        .id input{
+            margin-left: 32px;
+        }
+        .pw{
+            margin: 20px 0px 0px 100px;
+        }
+        #password1{
+            margin-left: 45px;
+        }
+        #password2{
+            margin-left: 13px;
+        }
+        .button{
+            margin: 20px 0px 0px 100px;
+        }
+        .username{
+            margin: 20px 0px 0px 100px;
+        }
+        .signup{
+            display: inline-block;
+            margin-left: 80%;
+            margin-top : 0;
+        }
+    </style>
+</head>
+<body>
+    <div class = "login">
+        <h1 class = "title">회원가입 페이지</h1>
+        <hr>
+        <form method="post" action="{% url 'account:signup' %}">
+            {% csrf_token %}
+            <p class = "id">email: <input type="text" name="email" id="email"/></p>
+            <p class = "username">username: <input type="text" name="username" id="username"/></p>
+            <p class = "pw">PW: <input type="password" name="password1" id="password1"/></p>
+            <p class = "pw">PW확인: <input type="password" name="password2" id="password2"/></p>
+            <p class = "button"><input type="submit" value="회원가입 하기"></p>
+        </form>
+        <hr>
+        <p class = signup> <a href="../login">로그인 하기</a></p>
+    </div>
+</body>
+</html>

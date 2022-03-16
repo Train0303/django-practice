@@ -4,6 +4,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.csrf import csrf_protect
 
+from .models import User
+
 @csrf_protect
 def login(request):
     if request.method == "POST":
@@ -21,3 +23,20 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('chat:index')
+
+@csrf_protect
+def signup(request):
+    if request.method == "POST":
+        if request.POST.get('password1') == request.POST.get('password2'):
+            try:
+                user = User.objects.create_user(email=request.POST.get('email'),
+                                                username=request.POST.get('username'),
+                                                password=request.POST.get('password1'))
+                auth_login(request,user)
+                print("생성완료")
+                return redirect("chat:index")
+            except:
+                print("생성실패")
+                return render(request, 'account/signup.html')            
+    print("생성실패")
+    return render(request, 'account/signup.html')

@@ -34,7 +34,8 @@ def get_secret(setting):
         raise ImproperlyConfigured(error_msg)
 
 SECRET_KEY = get_secret("SECRET_KEY")
-
+SESSION_COOKIE_AGE = 1200
+SESSION_SAVE_EVERY_REQUEST = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
