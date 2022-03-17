@@ -2,12 +2,39 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="../../static/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <title>Chat Room</title>
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br />
-    <input id="chat-message-input" type="text" size="100"><br />
-    <input id="chat-message-submit" type="button" value="Enter"/>
+    <div class="chat_wrap">
+        <div class="header">
+            CHAT
+        </div>
+        <div class="chat">
+            <ul>
+                <!-- 동적 생성 -->
+            </ul>
+        </div>
+        <div class="input-div">
+            <textarea placeholder="Press Enter for send message." onfocus="this.placeholder = ''" onblur="this.placeholder = 'Press Enter for send message.'"></textarea>
+        </div>
+     
+        <!-- format -->
+     
+        <div class="chat format">
+            <ul>
+                <li>
+                    <div class="sender">
+                        <span></span>
+                    </div>
+                    <div class="message">
+                        <span></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <script type="text/javascript">
         let roomName = "{{ room_name | escapejs }}";
@@ -15,32 +42,53 @@
             `ws://${window.location.host}/ws/chat/${roomName}/`
         );
 
+        function createMessageTag(LR_className, senderName, message) {
+        // 형식 가져오기
+            let chatLi = $('div.chat.format ul li').clone();
+    
+            // 값 채우기
+            chatLi.addClass(LR_className);
+            chatLi.find('.sender span').text(senderName);
+            chatLi.find('.message span').text(message);
+    
+            return chatLi;
+        }
+        function appendMessageTag(LR_className, senderName, message) {
+            const chatLi = createMessageTag(LR_className, senderName, message);
+            $('div.chat:not(.format) ul').append(chatLi);
+            // 스크롤바 아래 고정
+            $('div.chat').scrollTop($('div.chat').prop('scrollHeight'));
+        }
+
         chatSocket.onmessage = (e) => {
             let data = JSON.parse(e.data);
             let message = data['message'];
-            document.querySelector("#chat-log").value += (message + '\n');
+            let sender = data['send'];
+            let me = data['me'];
+            const LR = (sender != me) ? "right" : "left";
+            appendMessageTag(LR,sender,message);
+
         };
 
         chatSocket.onclose = (e) => {
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector("#chat-message-input").focus();
-        document.querySelector("#chat-message-input").addEventListener("keyup",(e) => {
-            if (e.keyCode === 13) { 
-                document.querySelector("#chat-message-submit").click();
+
+        document.querySelector("div.input-div textarea").addEventListener("keydown",(e) => {
+            if (e.keyCode === 13 && !e.shiftKey) { 
+                let messageInputDom = document.querySelector("div.input-div textarea");
+                let message = messageInputDom.value;
+                var blank_pattern = /^\s+|\s+$/g;
+                if(message.replace(blank_pattern, '' ) != "" ){
+                    chatSocket.send(JSON.stringify({
+                        'message' : message
+                    }));
+                }
+                messageInputDom.value = '';
             }
         });
 
-        document.querySelector("#chat-message-submit").addEventListener("click", (e) => {
-            let messageInputDom = document.querySelector("#chat-message-input");
-            let message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message' : message
-            }));
-
-            messageInputDom.value = '';
-        });
     </script>
 </body>
 </html>

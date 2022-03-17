@@ -36,7 +36,8 @@ def signup(request):
                 print("생성완료")
                 return redirect("chat:index")
             except:
-                print("생성실패")
+                
+                print("생성실패1")
                 return render(request, 'account/signup.html')            
-    print("생성실패")
+    print("생성실패2")
     return render(request, 'account/signup.html')
