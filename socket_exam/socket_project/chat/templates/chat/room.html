@@ -39,7 +39,7 @@
     <script type="text/javascript">
         let roomName = "{{ room_name | escapejs }}";
         let chatSocket = new WebSocket(
-            `ws://${window.location.host}/ws/chat/${roomName}/`
+            `ws://${window.location.host}/ws/${roomName}/`
         );
 
         function createMessageTag(LR_className, senderName, message) {
