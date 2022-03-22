@@ -31,6 +31,9 @@
                     <div class="message">
                         <span></span>
                     </div>
+                    <div class="notice">
+                        <span></span>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -42,19 +45,26 @@
             `ws://${window.location.host}/ws/${roomName}/`
         );
 
-        function createMessageTag(LR_className, senderName, message) {
+        function createMessageTag(loca_className, senderName, message) {
         // 형식 가져오기
             let chatLi = $('div.chat.format ul li').clone();
     
             // 값 채우기
-            chatLi.addClass(LR_className);
-            chatLi.find('.sender span').text(senderName);
-            chatLi.find('.message span').text(message);
-    
+            if (loca_className == "center"){
+                chatLi.addClass(loca_className);
+                chatLi.find('.notice span').text(message);
+                chatLi.find('.message').css("display","none");
+            }
+            else{
+                chatLi.addClass(loca_className);
+                chatLi.find('.sender span').text(senderName);
+                chatLi.find('.message span').text(message);
+                chatLi.find('.notice').css("display","none");
+            }
             return chatLi;
         }
-        function appendMessageTag(LR_className, senderName, message) {
-            const chatLi = createMessageTag(LR_className, senderName, message);
+        function appendMessageTag(loca_className, senderName, message) {
+            const chatLi = createMessageTag(loca_className, senderName, message);
             $('div.chat:not(.format) ul').append(chatLi);
             // 스크롤바 아래 고정
             $('div.chat').scrollTop($('div.chat').prop('scrollHeight'));
@@ -65,9 +75,15 @@
             let message = data['message'];
             let sender = data['send'];
             let me = data['me'];
-            const LR = (sender != me) ? "right" : "left";
-            appendMessageTag(LR,sender,message);
-
+            let loca;
+            if(data['notice'] == true){
+                console.log(data['notice']);
+                loca = "center";
+            }
+            else{
+                loca = (sender != me) ? "right" : "left";
+            }
+            appendMessageTag(loca,sender,message);
         };
 
         chatSocket.onclose = (e) => {
