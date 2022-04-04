@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
-
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 
 # @api_view(['GET','POST'])
 # def user_list_create_api_view(request):
@@ -84,14 +84,25 @@ class UserDetailAPIView(APIView):
         user.delete()
         return Response(stauts=status.HTTP_204_NO_CONTENT)
         
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     def get_queryset(self):
-#         qs = super().get_queryset()
-#         search = self.request.query_params.get('search', '')
-#         if search:
-#             qs = qs.filter(username__contains=search)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        qs = super().get_queryset()
+        search = self.request.query_params.get('search', '')
+        if search:
+            qs = qs.filter(username__contains=search)
         
-#         return qs
+        return qs
 
+
+class UserListView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetailView(RetrieveAPIView):
+    
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    def get_queryset(self,username):
+        return User.objects.get(username = username)
