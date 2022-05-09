@@ -7,7 +7,7 @@ from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
-
+from rest_framework.generics import ListCreateAPIView
 # @api_view(['GET','POST'])
 # def user_list_create_api_view(request):
 #     if (request.method) == "GET":
@@ -96,13 +96,12 @@ class UserViewSet(viewsets.ModelViewSet):
         return qs
 
 
-class UserListView(ListAPIView):
+class UserListView(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class UserDetailView(RetrieveAPIView):
-    
+    lookup_field = 'username'
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    def get_queryset(self,username):
-        return User.objects.get(username = username)
+    

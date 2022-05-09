@@ -7,13 +7,12 @@ from .views import UserViewSet,UserListView,UserDetailView
 from .views import UserListAPIView,UserDetailAPIView
 
 router = routers.DefaultRouter()
-# router.register('user',UserViewSet)
-# router.register(r'^user/',user_list_create_api_view,basename="userlist")
-# router.register(r'^user/<str:username>/',user_detail_api_view,basename="userdetail")
+router.register(r'user',UserViewSet)
+
 
 urlpatterns = [
     path('',include(router.urls)),
-    path("user/",UserListView.as_view()),
+    path("user",UserListView.as_view()),
     path("user/<str:username>",UserDetailView.as_view()),
     # path("user/",UserListAPIView.as_view()),
     # path("user/<str:username>",UserDetailAPIView.as_view()),

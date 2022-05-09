@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Post,PostImage
-from account.serializers import UserSerializer
+from account.serializers import UserReadSerializer, UserSerializer
 from account.models import User
 class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +9,7 @@ class PostImageSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
-    writer = UserSerializer(read_only = True)
+    writer = UserReadSerializer(read_only = True)
     
     def get_images(self,obj):
         image_data = obj.images
